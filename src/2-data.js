@@ -49,10 +49,6 @@ class Data {
     this.assetsMap = new Map([
       ["view-1", ASSETS["view-1"].desktop],
       ["view-1-mp", ASSETS["view-1"].mobile],
-      ["view-2", ASSETS["view-2"].desktop],
-      ["view-2-mp", ASSETS["view-2"].mobile],
-      ["view-3", ASSETS["view-3"].desktop],
-      ["view-3-mp", ASSETS["view-3"].mobile],
     ]);
   }
   //.......................................................................
@@ -239,33 +235,33 @@ class Data {
     this.global.playRange();
   };
   vidEnd = () => {
-    if (this.viewVidFlag && !this.viewChainFlag) {
-      this.setLastActiveView();
-      this.setDataVidBackgroundImg();
-      this.setDataVidPoster(); //done here so poster doesn't appear earlier
-      this.showActiveCtrlBtnWrapper();
-      this.introText.classList.add("active");
-      this.global.enableNavLinksAndNavBtn();
-    } else if (this.viewChainFlag) {
-      this.viewChainFlag = false;
-      this.setLastActiveView(HOME_VIEW);
-      this.setDataVidBackgroundImg();
-      this.setViewVidStartAndEnd();
-      this.playDataVid();
-    } else {
-      this.dimmer.classList.add("active");
-      this.activeDataWrapper
-        .querySelector(".txt-img-btn")
-        .classList.add("active");
-      this.showData();
-      this.showBackBtn();
-      //set bckgrnd img to black to prevent flash of image when changing nav
-      const activeVidWrap = this.global.getActiveVid().closest(".vid-wrap");
-      if (activeVidWrap) {
-        activeVidWrap.style.backgroundImage = "none";
-        activeVidWrap.style.backgroundColor = "black";
-      }
+    // if (this.viewVidFlag && !this.viewChainFlag) {
+    //   this.setLastActiveView();
+    //   this.setDataVidBackgroundImg();
+    //   this.setDataVidPoster(); //done here so poster doesn't appear earlier
+    //   this.showActiveCtrlBtnWrapper();
+    //   this.introText.classList.add("active");
+    //   this.global.enableNavLinksAndNavBtn();
+    // } else if (this.viewChainFlag) {
+    //   this.viewChainFlag = false;
+    //   this.setLastActiveView(HOME_VIEW);
+    //   this.setDataVidBackgroundImg();
+    //   this.setViewVidStartAndEnd();
+    //   this.playDataVid();
+    // } else {
+    this.dimmer.classList.add("active");
+    this.activeDataWrapper
+      .querySelector(".txt-img-btn")
+      .classList.add("active");
+    this.showData();
+    this.showBackBtn();
+    //set bckgrnd img to black to prevent flash of image when changing nav
+    const activeVidWrap = this.global.getActiveVid().closest(".vid-wrap");
+    if (activeVidWrap) {
+      activeVidWrap.style.backgroundImage = "none";
+      activeVidWrap.style.backgroundColor = "black";
     }
+    // }
   };
   backToViewFromComp = () => {
     this.global.flashBlackout();
