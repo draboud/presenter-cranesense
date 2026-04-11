@@ -1,3 +1,5 @@
+import { LOOP_SEQUENCE_VIDS } from "./0-config";
+
 class Sequence {
   constructor(globalController, container) {
     this.global = globalController;
@@ -48,10 +50,6 @@ class Sequence {
     this.hideAllIntroText();
     this.hideAllActionHeadings();
     this.setAndShowActiveTxtWrapper();
-    // if (
-    //   this.activeVidWrapper &&
-    //   this.activeVidWrapper.dataset.sequence !== this.currentVidWrapper
-    // )
     this.setAndShowActiveVidWrapper();
     this.allActiveSequenceSteps = new Set();
     const steps = this.activeVidWrapper.querySelectorAll(".vid-code");
@@ -110,18 +108,16 @@ class Sequence {
       (el) => el.dataset.sequence === this.activeSequence,
     );
     this.activeVidWrapper.classList.add("active");
-    // this.currentVidWrapper = this.activeVidWrapper.dataset.sequence;
   };
   setActiveSequenceStep = (sequenceStepData) => {
     this.activeVidWrapper.querySelectorAll(".vid-code").forEach((el) => {
       if (el.dataset.step === sequenceStepData) {
-        this.activeSequenceStep = el;
         el.classList.add("active");
       } else {
         el.classList.remove("active");
       }
-      if (el.querySelector(".vid").offsetParent !== null)
-        this.activeSequenceStep = el;
+      if (el.classList.contains("active") && el.offsetParent !== null)
+        this.activeSequenceStep = el.querySelector(".vid");
     });
   };
   setAndShowActiveCtrlBtnWrapper = () => {
@@ -154,10 +150,7 @@ class Sequence {
       .classList.add("active");
     this.sequenceEndIsCancelled = false;
     this.setActiveSequenceStep(clickedCtrlBtn.dataset.step);
-    this.global.setActiveVid(
-      this.activeVidWrapper,
-      this.activeSequenceStep.dataset.step,
-    );
+    this.global.setActiveVid(this.activeVidWrapper, this.activeSequenceStep);
     this.global.setStartTime(clickedCtrlBtn.dataset.startTime);
     this.global.setEndTime(clickedCtrlBtn.dataset.endTime);
     this.global.activateCurrentBtn(clickedCtrlBtn);
@@ -172,21 +165,27 @@ class Sequence {
     if (this.sequenceEndIsCancelled === false) {
       this.pauseWrapper.classList.remove("active");
       this.global.disablePause(this.pauseWrapper);
-      let activeStepIndex = [...this.allActiveSequenceSteps].indexOf(
-        this.activeSequenceStep.dataset.step,
-      );
-      if (activeStepIndex === this.allActiveSequenceSteps.size - 1)
-        activeStepIndex = 0;
-      else {
-        activeStepIndex += 1;
+      this.global.deactivateCurrentBtns();
+      if (LOOP_SEQUENCE_VIDS) {
+        let activeStepIndex = [...this.allActiveSequenceSteps].indexOf(
+          this.activeSequenceStep.parentElement.dataset.step,
+        );
+        if (activeStepIndex === this.allActiveSequenceSteps.size - 1)
+          activeStepIndex = 0;
+        else {
+          activeStepIndex += 1;
+        }
+        const nextStepBtn = [
+          ...this.activeCtrlBtnWrapper.querySelectorAll(".ctrl-btn"),
+        ].find(
+          (el) =>
+            el.dataset.step ===
+            [...this.allActiveSequenceSteps][activeStepIndex],
+        );
+        setTimeout(() => {
+          this.playCtrlBtnVid(nextStepBtn);
+        }, 200); //delay to stabilize elements before play
       }
-      const nextStepBtn = [
-        ...this.activeCtrlBtnWrapper.querySelectorAll(".ctrl-btn"),
-      ].find(
-        (el) =>
-          el.dataset.step === [...this.allActiveSequenceSteps][activeStepIndex],
-      );
-      this.playCtrlBtnVid(nextStepBtn);
     }
   };
   clearSequenceTimers = () => {

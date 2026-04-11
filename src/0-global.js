@@ -95,14 +95,7 @@ export const setActiveVid = function (activeVidWrap, activeSequenceStep) {
       }
     });
   } else if (activeVidWrap && activeSequenceStep) {
-    activeVidWrap.querySelectorAll(".vid-code").forEach((el) => {
-      if (
-        el.dataset.step === activeSequenceStep &&
-        el.querySelector(".vid").offsetParent !== null
-      ) {
-        _state.activeVid = el.querySelector(".vid");
-      }
-    });
+    _state.activeVid = activeSequenceStep;
   } else {
     allVidCodes.forEach((el) => {
       if (el.querySelector(".vid").offsetParent !== null) {
