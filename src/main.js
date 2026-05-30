@@ -1,31 +1,6 @@
 console.log("May 28, 2026");
 //.......................................................................
-const deviceTestTxt = document.querySelector(".device-test-txt");
-// if (!deviceTestTxt) return;
-
-// 2. Read the browser's User Agent string
-const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-// 3. Check for iOS or Android markers
-const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-const isAndroid = /Android/i.test(userAgent);
-
-// 4. Update the website UI with the result
-if (isIOS) {
-  deviceTestTxt.innerText = "📱 Device Detected: iOS";
-  deviceTestTxt.style.color = "#007AFF"; // Apple Blue
-  deviceTestTxt.style.background = "#E5F1FF";
-} else if (isAndroid) {
-  deviceTestTxt.innerText = "🤖 Device Detected: Android";
-  deviceTestTxt.style.color = "#3DDC84"; // Android Green
-  deviceTestTxt.style.background = "#E8F9F0";
-} else {
-  deviceTestTxt.innerText = "💻 Device Detected: Desktop / Other";
-  deviceTestTxt.style.color = "#333333";
-  deviceTestTxt.style.background = "#F0F0F0";
-}
 //.......................................................................
-
 import { TIMING } from "./0-config";
 import * as global from "./0-global";
 import NavbarClass from "./0-navbar";
